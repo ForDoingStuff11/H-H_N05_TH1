@@ -1,0 +1,151 @@
+{
+  "znradymf": 4,
+  "znradymf_yuzad": 0,
+  "yqfmpmfm": {
+    "oaxmn": {
+      "bdahqzmzoq": []
+    },
+    "wqdzqxebqo": {
+      "zmyq": "bkftaz3",
+      "puebxmk_zmyq": "Bkftaz 3"
+    },
+    "xmzsgmsq_uzra": {
+      "zmyq": "bkftaz"
+    }
+  },
+  "oqxxe": [
+    {
+      "oqxx_fkbq": "oapq",
+      "eagdoq": [
+        "uybadf zqfiadwj me zj\z",
+        "uybadf gdxxun.dqcgqef\z",
+        "uybadf ae\z",
+        "uybadf dmzpay\z",
+        "\z",
+        "pqr paizxamp_pmfmeqf(gdx, ruxqzmyq):\z",
+        "    ur zaf ae.bmft.qjuefe(ruxqzmyq):\z",
+        "        gdxxun.dqcgqef.gdxdqfduqhq(gdx, ruxqzmyq)\z",
+        "\z",
+        "pqr nguxp_rmoqnaaw_sdmbt(ruxqzmyq):\z",
+        "    S = zj.PuSdmbt()\z",
+        "    iuft abqz(ruxqzmyq, \"d\") me r:\z",
+        "        rad xuzq uz r:\z",
+        "            ur xuzq.efmdfeiuft(\"#\"):\z",
+        "                oazfuzgq\z",
+        "            g, h = ymb(uzf, xuzq.efdub().ebxuf())\z",
+        "            omb = dmzpay.dmzpuzf(1, 1000)\z",
+        "            ur zaf S.tme_qpsq(g, h):\z",
+        "                S.mpp_qpsq(g, h, ombmoufk=omb)\z",
+        "            qxeq:\z",
+        "                S[g][h]['ombmoufk'] += omb\z",
+        "            ur zaf S.tme_qpsq(h, g):\z",
+        "                S.mpp_qpsq(h, g, ombmoufk=omb)\z",
+        "            qxeq:\z",
+        "                S[h][g]['ombmoufk'] += omb\z",
+        "    dqfgdz S\z",
+        "\z",
+        "rmoqnaaw_gdx = \"tffbe://ezmb.efmzradp.qpg/pmfm/rmoqnaaw_oaynuzqp.fjf.sl\"\z",
+        "paizxamp_pmfmeqf(rmoqnaaw_gdx, \"rmoqnaaw_oaynuzqp.fjf.sl\")\z",
+        "ae.ekefqy(\"sgzlub -wr rmoqnaaw_oaynuzqp.fjf.sl\")\z",
+        "\z",
+        "S_rn = nguxp_rmoqnaaw_sdmbt(\"rmoqnaaw_oaynuzqp.fjf\")\z",
+        "\z",
+        "z = uzf(uzbgf(\"z: \"))\z",
+        "y = uzf(uzbgf(\"y: \"))\z",
+        "e = uzf(uzbgf(\"e: \"))\z",
+        "f = uzf(uzbgf(\"f: \"))\z",
+        "ur e<0 ad f>z ad e>z ad f<0:\z",
+        "        bduzf(\"e taeo f wtdzs twb xu\")\z",
+        "qxeq:\z",
+        "  rxai_hmxgq, _ = zj.ymjuygy_rxai(S_rn, e, f)\z",
+        "  bduzf(r\"Rmoqnaaw: Ymj rxai fe {e} -> {f} = {rxai_hmxgq}\")\z"
+      ],
+      "yqfmpmfm": {
+        "up": "4TWkYOFY4qZR",
+        "oaxmn": {
+          "nmeq_gdu": "tffbe://xaomxtaef:8080/",
+          "tqustf": 356
+        },
+        "agfbgfUp": "08515421-6q42-430q-9qn0-1q2rq2758o6o"
+      },
+      "qjqogfuaz_oagzf": 13,
+      "agfbgfe": [
+        {
+          "agfbgf_fkbq": "qddad",
+          "qzmyq": "WqknamdpUzfqddgbf",
+          "qhmxgq": "Uzfqddgbfqp nk geqd",
+          "fdmoqnmow": [
+            "\g001n[0;31y---------------------------------------------------------------------------\g001n[0y",
+            "\g001n[0;31yWqknamdpUzfqddgbf\g001n[0y                         Fdmoqnmow (yaef dqoqzf omxx xmef)",
+            "\g001n[0;32y/fyb/ubkftaz-uzbgf-2539989043.bk\g001n[0y uz \g001n[0;36y<oqxx xuzq: 0>\g001n[0;34y()\g001n[0y\z\g001n[1;32y     32\g001n[0y \g001n[0yS_rn\g001n[0y \g001n[0;34y=\g001n[0y \g001n[0ynguxp_rmoqnaaw_sdmbt\g001n[0y\g001n[0;34y(\g001n[0y\g001n[0;34y\"rmoqnaaw_oaynuzqp.fjf\"\g001n[0y\g001n[0;34y)\g001n[0y\g001n[0;34y\g001n[0y\g001n[0;34y\g001n[0y\g001n[0y\z\g001n[1;32y     33\g001n[0y \g001n[0;34y\g001n[0y\g001n[0y\z\g001n[0;32y---> 34\g001n[0;31y \g001n[0yz\g001n[0y \g001n[0;34y=\g001n[0y \g001n[0yuzf\g001n[0y\g001n[0;34y(\g001n[0y\g001n[0yuzbgf\g001n[0y\g001n[0;34y(\g001n[0y\g001n[0;34y\"z: \"\g001n[0y\g001n[0;34y)\g001n[0y\g001n[0;34y)\g001n[0y\g001n[0;34y\g001n[0y\g001n[0;34y\g001n[0y\g001n[0y\z\g001n[0y\g001n[1;32y     35\g001n[0y \g001n[0yy\g001n[0y \g001n[0;34y=\g001n[0y \g001n[0yuzf\g001n[0y\g001n[0;34y(\g001n[0y\g001n[0yuzbgf\g001n[0y\g001n[0;34y(\g001n[0y\g001n[0;34y\"y: \"\g001n[0y\g001n[0;34y)\g001n[0y\g001n[0;34y)\g001n[0y\g001n[0;34y\g001n[0y\g001n[0;34y\g001n[0y\g001n[0y\z\g001n[1;32y     36\g001n[0y \g001n[0ye\g001n[0y \g001n[0;34y=\g001n[0y \g001n[0yuzf\g001n[0y\g001n[0;34y(\g001n[0y\g001n[0yuzbgf\g001n[0y\g001n[0;34y(\g001n[0y\g001n[0;34y\"e: \"\g001n[0y\g001n[0;34y)\g001n[0y\g001n[0;34y)\g001n[0y\g001n[0;34y\g001n[0y\g001n[0;34y\g001n[0y\g001n[0y\z",
+            "\g001n[0;32y/ged/xaomx/xun/bkftaz3.12/puef-bmowmsqe/ubkwqdzqx/wqdzqxnmeq.bk\g001n[0y uz \g001n[0;36ydmi_uzbgf\g001n[0;34y(eqxr, bdaybf)\g001n[0y\z\g001n[1;32y   1175\g001n[0y                 \g001n[0;34y\"dmi_uzbgf ime omxxqp, ngf ftue rdazfqzp paqe zaf egbbadf uzbgf dqcgqefe.\"\g001n[0y\g001n[0;34y\g001n[0y\g001n[0;34y\g001n[0y\g001n[0y\z\g001n[1;32y   1176\g001n[0y             )\z\g001n[0;32y-> 1177\g001n[0;31y         dqfgdz eqxr._uzbgf_dqcgqef(\z\g001n[0y\g001n[1;32y   1178\g001n[0y             \g001n[0yefd\g001n[0y\g001n[0;34y(\g001n[0y\g001n[0ybdaybf\g001n[0y\g001n[0;34y)\g001n[0y\g001n[0;34y,\g001n[0y\g001n[0;34y\g001n[0y\g001n[0;34y\g001n[0y\g001n[0y\z\g001n[1;32y   1179\g001n[0y             \g001n[0yeqxr\g001n[0y\g001n[0;34y.\g001n[0y\g001n[0y_bmdqzf_upqzf\g001n[0y\g001n[0;34y[\g001n[0y\g001n[0;34y\"etqxx\"\g001n[0y\g001n[0;34y]\g001n[0y\g001n[0;34y,\g001n[0y\g001n[0;34y\g001n[0y\g001n[0;34y\g001n[0y\g001n[0y\z",
+            "\g001n[0;32y/ged/xaomx/xun/bkftaz3.12/puef-bmowmsqe/ubkwqdzqx/wqdzqxnmeq.bk\g001n[0y uz \g001n[0;36y_uzbgf_dqcgqef\g001n[0;34y(eqxr, bdaybf, upqzf, bmdqzf, bmeeiadp)\g001n[0y\z\g001n[1;32y   1217\g001n[0y             \g001n[0;32yqjoqbf\g001n[0y \g001n[0yWqknamdpUzfqddgbf\g001n[0y\g001n[0;34y:\g001n[0y\g001n[0;34y\g001n[0y\g001n[0;34y\g001n[0y\g001n[0y\z\g001n[1;32y   1218\g001n[0y                 \g001n[0;31y# dq-dmueq WqknamdpUzfqddgbf, fa fdgzomfq fdmoqnmow\g001n[0y\g001n[0;34y\g001n[0y\g001n[0;34y\g001n[0y\g001n[0y\z\g001n[0;32y-> 1219\g001n[0;31y                 \g001n[0;32ydmueq\g001n[0y \g001n[0yWqknamdpUzfqddgbf\g001n[0y\g001n[0;34y(\g001n[0y\g001n[0;34y\"Uzfqddgbfqp nk geqd\"\g001n[0y\g001n[0;34y)\g001n[0y \g001n[0;32yrday\g001n[0y \g001n[0;32yZazq\g001n[0y\g001n[0;34y\g001n[0y\g001n[0;34y\g001n[0y\g001n[0y\z\g001n[0y\g001n[1;32y   1220\g001n[0y             \g001n[0;32yqjoqbf\g001n[0y \g001n[0yQjoqbfuaz\g001n[0y\g001n[0;34y:\g001n[0y\g001n[0;34y\g001n[0y\g001n[0;34y\g001n[0y\g001n[0y\z\g001n[1;32y   1221\g001n[0y                 \g001n[0yeqxr\g001n[0y\g001n[0;34y.\g001n[0y\g001n[0yxas\g001n[0y\g001n[0;34y.\g001n[0y\g001n[0yimdzuzs\g001n[0y\g001n[0;34y(\g001n[0y\g001n[0;34y\"Uzhmxup Yqeemsq:\"\g001n[0y\g001n[0;34y,\g001n[0y \g001n[0yqjo_uzra\g001n[0y\g001n[0;34y=\g001n[0y\g001n[0;32yFdgq\g001n[0y\g001n[0;34y)\g001n[0y\g001n[0;34y\g001n[0y\g001n[0;34y\g001n[0y\g001n[0y\z",
+            "\g001n[0;31yWqknamdpUzfqddgbf\g001n[0y: Uzfqddgbfqp nk geqd"
+          ]
+        }
+      ]
+    },
+    {
+      "oqxx_fkbq": "oapq",
+      "eagdoq": [
+        "pqr nguxp_sbxge_sdmbt(ruxqzmyq):\z",
+        "    S = zj.PuSdmbt()\z",
+        "    iuft abqz(ruxqzmyq, \"d\") me r:\z",
+        "        rad xuzq uz r:\z",
+        "            ur xuzq.efmdfeiuft(\"#\"):\z",
+        "                oazfuzgq\z",
+        "            g, h = ymb(uzf, xuzq.efdub().ebxuf())\z",
+        "            omb = 1 + ((g + h) % (10**6))\z",
+        "            ur zaf S.tme_qpsq(g, h):\z",
+        "                S.mpp_qpsq(g, h, ombmoufk=omb)\z",
+        "            qxeq:\z",
+        "                S[g][h]['ombmoufk'] += omb\z",
+        "            ur zaf S.tme_qpsq(h, g):\z",
+        "                S.mpp_qpsq(h, g, ombmoufk=omb)\z",
+        "            qxeq:\z",
+        "                S[h][g]['ombmoufk'] += omb\z",
+        "    dqfgdz S\z",
+        "\z",
+        "sbxge_gdx = \"tffbe://ezmb.efmzradp.qpg/pmfm/sbxge_oaynuzqp.fjf.sl\"\z",
+        "paizxamp_pmfmeqf(sbxge_gdx, \"sbxge_oaynuzqp.fjf.sl\")\z",
+        "ae.ekefqy(\"sgzlub -wr sbxge_oaynuzqp.fjf.sl\")\z",
+        "\z",
+        "S_sb = nguxp_sbxge_sdmbt(\"sbxge_oaynuzqp.fjf\")\z",
+        "z = uzf(uzbgf(\"z: \"))\z",
+        "y = uzf(uzbgf(\"y: \"))\z",
+        "e = uzf(uzbgf(\"e: \"))\z",
+        "f = uzf(uzbgf(\"f: \"))\z",
+        "ur e<0 ad f>z:\z",
+        "        bduzf(\"e taeo f wtdzs twb xu\")\z",
+        "qxeq:\z",
+        "  rxai_hmxgq, _ = zj.ymjuygy_rxai(S_sb, e, f)\z",
+        "  bduzf(r\"Sbxge: Ymj rxai fe {e} -> {f} = {rxai_hmxgq}\")\z"
+      ],
+      "yqfmpmfm": {
+        "oaxmn": {
+          "nmeq_gdu": "tffbe://xaomxtaef:8080/",
+          "tqustf": 356
+        },
+        "up": "UXEFKyjaPzvo",
+        "agfbgfUp": "m5mor34o-867m-4767-q2m0-o882o6qm1p19"
+      },
+      "qjqogfuaz_oagzf": 10,
+      "agfbgfe": [
+        {
+          "agfbgf_fkbq": "qddad",
+          "qzmyq": "WqknamdpUzfqddgbf",
+          "qhmxgq": "",
+          "fdmoqnmow": [
+            "\g001n[0;31y---------------------------------------------------------------------------\g001n[0y",
+            "\g001n[0;31yWqknamdpUzfqddgbf\g001n[0y                         Fdmoqnmow (yaef dqoqzf omxx xmef)",
+            "\g001n[0;32y/fyb/ubkftaz-uzbgf-660276464.bk\g001n[0y uz \g001n[0;36y<oqxx xuzq: 0>\g001n[0;34y()\g001n[0y\z\g001n[1;32y     21\g001n[0y \g001n[0yae\g001n[0y\g001n[0;34y.\g001n[0y\g001n[0yekefqy\g001n[0y\g001n[0;34y(\g001n[0y\g001n[0;34y\"sgzlub -wr sbxge_oaynuzqp.fjf.sl\"\g001n[0y\g001n[0;34y)\g001n[0y\g001n[0;34y\g001n[0y\g001n[0;34y\g001n[0y\g001n[0y\z\g001n[1;32y     22\g001n[0y \g001n[0;34y\g001n[0y\g001n[0y\z\g001n[0;32y---> 23\g001n[0;31y \g001n[0yS_sb\g001n[0y \g001n[0;34y=\g001n[0y \g001n[0ynguxp_sbxge_sdmbt\g001n[0y\g001n[0;34y(\g001n[0y\g001n[0;34y\"sbxge_oaynuzqp.fjf\"\g001n[0y\g001n[0;34y)\g001n[0y\g001n[0;34y\g001n[0y\g001n[0;34y\g001n[0y\g001n[0y\z\g001n[0y\g001n[1;32y     24\g001n[0y \g001n[0yz\g001n[0y \g001n[0;34y=\g001n[0y \g001n[0yuzf\g001n[0y\g001n[0;34y(\g001n[0y\g001n[0yuzbgf\g001n[0y\g001n[0;34y(\g001n[0y\g001n[0;34y\"z: \"\g001n[0y\g001n[0;34y)\g001n[0y\g001n[0;34y)\g001n[0y\g001n[0;34y\g001n[0y\g001n[0;34y\g001n[0y\g001n[0y\z\g001n[1;32y     25\g001n[0y \g001n[0yy\g001n[0y \g001n[0;34y=\g001n[0y \g001n[0yuzf\g001n[0y\g001n[0;34y(\g001n[0y\g001n[0yuzbgf\g001n[0y\g001n[0;34y(\g001n[0y\g001n[0;34y\"y: \"\g001n[0y\g001n[0;34y)\g001n[0y\g001n[0;34y)\g001n[0y\g001n[0;34y\g001n[0y\g001n[0;34y\g001n[0y\g001n[0y\z",
+            "\g001n[0;32y/fyb/ubkftaz-uzbgf-660276464.bk\g001n[0y uz \g001n[0;36ynguxp_sbxge_sdmbt\g001n[0;34y(ruxqzmyq)\g001n[0y\z\g001n[1;32y      8\g001n[0y             \g001n[0yomb\g001n[0y \g001n[0;34y=\g001n[0y \g001n[0;36y1\g001n[0y \g001n[0;34y+\g001n[0y \g001n[0;34y(\g001n[0y\g001n[0;34y(\g001n[0y\g001n[0yg\g001n[0y \g001n[0;34y+\g001n[0y \g001n[0yh\g001n[0y\g001n[0;34y)\g001n[0y \g001n[0;34y%\g001n[0y \g001n[0;34y(\g001n[0y\g001n[0;36y10\g001n[0y\g001n[0;34y**\g001n[0y\g001n[0;36y6\g001n[0y\g001n[0;34y)\g001n[0y\g001n[0;34y)\g001n[0y\g001n[0;34y\g001n[0y\g001n[0;34y\g001n[0y\g001n[0y\z\g001n[1;32y      9\g001n[0y             \g001n[0;32yur\g001n[0y \g001n[0;32yzaf\g001n[0y \g001n[0yS\g001n[0y\g001n[0;34y.\g001n[0y\g001n[0ytme_qpsq\g001n[0y\g001n[0;34y(\g001n[0y\g001n[0yg\g001n[0y\g001n[0;34y,\g001n[0y \g001n[0yh\g001n[0y\g001n[0;34y)\g001n[0y\g001n[0;34y:\g001n[0y\g001n[0;34y\g001n[0y\g001n[0;34y\g001n[0y\g001n[0y\z\g001n[0;32y---> 10\g001n[0;31y                 \g001n[0yS\g001n[0y\g001n[0;34y.\g001n[0y\g001n[0ympp_qpsq\g001n[0y\g001n[0;34y(\g001n[0y\g001n[0yg\g001n[0y\g001n[0;34y,\g001n[0y \g001n[0yh\g001n[0y\g001n[0;34y,\g001n[0y \g001n[0yombmoufk\g001n[0y\g001n[0;34y=\g001n[0y\g001n[0yomb\g001n[0y\g001n[0;34y)\g001n[0y\g001n[0;34y\g001n[0y\g001n[0;34y\g001n[0y\g001n[0y\z\g001n[0y\g001n[1;32y     11\g001n[0y             \g001n[0;32yqxeq\g001n[0y\g001n[0;34y:\g001n[0y\g001n[0;34y\g001n[0y\g001n[0;34y\g001n[0y\g001n[0y\z\g001n[1;32y     12\g001n[0y                 \g001n[0yS\g001n[0y\g001n[0;34y[\g001n[0y\g001n[0yg\g001n[0y\g001n[0;34y]\g001n[0y\g001n[0;34y[\g001n[0y\g001n[0yh\g001n[0y\g001n[0;34y]\g001n[0y\g001n[0;34y[\g001n[0y\g001n[0;34y'ombmoufk'\g001n[0y\g001n[0;34y]\g001n[0y \g001n[0;34y+=\g001n[0y \g001n[0yomb\g001n[0y\g001n[0;34y\g001n[0y\g001n[0;34y\g001n[0y\g001n[0y\z",
+            "\g001n[0;32y/ged/xaomx/xun/bkftaz3.12/puef-bmowmsqe/zqfiadwj/oxmeeqe/pusdmbt.bk\g001n[0y uz \g001n[0;36ympp_qpsq\g001n[0;34y(eqxr, g_ar_qpsq, h_ar_qpsq, **mffd)\g001n[0y\z\g001n[1;32y    733\g001n[0y         \g001n[0yeqxr\g001n[0y\g001n[0;34y.\g001n[0y\g001n[0y_egoo\g001n[0y\g001n[0;34y[\g001n[0y\g001n[0yg\g001n[0y\g001n[0;34y]\g001n[0y\g001n[0;34y[\g001n[0y\g001n[0yh\g001n[0y\g001n[0;34y]\g001n[0y \g001n[0;34y=\g001n[0y \g001n[0ypmfmpuof\g001n[0y\g001n[0;34y\g001n[0y\g001n[0;34y\g001n[0y\g001n[0y\z\g001n[1;32y    734\g001n[0y         \g001n[0yeqxr\g001n[0y\g001n[0;34y.\g001n[0y\g001n[0y_bdqp\g001n[0y\g001n[0;34y[\g001n[0y\g001n[0yh\g001n[0y\g001n[0;34y]\g001n[0y\g001n[0;34y[\g001n[0y\g001n[0yg\g001n[0y\g001n[0;34y]\g001n[0y \g001n[0;34y=\g001n[0y \g001n[0ypmfmpuof\g001n[0y\g001n[0;34y\g001n[0y\g001n[0;34y\g001n[0y\g001n[0y\z\g001n[0;32y--> 735\g001n[0;31y         \g001n[0yzj\g001n[0y\g001n[0;34y.\g001n[0y\g001n[0y_oxqmd_omotq\g001n[0y\g001n[0;34y(\g001n[0y\g001n[0yeqxr\g001n[0y\g001n[0;34y)\g001n[0y\g001n[0;34y\g001n[0y\g001n[0;34y\g001n[0y\g001n[0y\z\g001n[0y\g001n[1;32y    736\g001n[0y \g001n[0;34y\g001n[0y\g001n[0y\z\g001n[1;32y    737\g001n[0y     \g001n[0;32ypqr\g001n[0y \g001n[0ympp_qpsqe_rday\g001n[0y\g001n[0;34y(\g001n[0y\g001n[0yeqxr\g001n[0y\g001n[0;34y,\g001n[0y \g001n[0yqngzot_fa_mpp\g001n[0y\g001n[0;34y,\g001n[0y \g001n[0;34y**\g001n[0y\g001n[0ymffd\g001n[0y\g001n[0;34y)\g001n[0y\g001n[0;34y:\g001n[0y\g001n[0;34y\g001n[0y\g001n[0;34y\g001n[0y\g001n[0y\z",
+            "\g001n[0;32y/ged/xaomx/xun/bkftaz3.12/puef-bmowmsqe/zqfiadwj/gfuxe/yueo.bk\g001n[0y uz \g001n[0;36y_oxqmd_omotq\g001n[0;34y(S)\g001n[0y\z\g001n[1;32y    591\g001n[0y \g001n[0;34y\g001n[0y\g001n[0y\z\g001n[1;32y    592\g001n[0y \g001n[0;34y\g001n[0y\g001n[0y\z\g001n[0;32y--> 593\g001n[0;31y \g001n[0;32ypqr\g001n[0y \g001n[0y_oxqmd_omotq\g001n[0y\g001n[0;34y(\g001n[0y\g001n[0yS\g001n[0y\g001n[0;34y)\g001n[0y\g001n[0;34y:\g001n[0y\g001n[0;34y\g001n[0y\g001n[0;34y\g001n[0y\g001n[0y\z\g001n[0y\g001n[1;32y    594\g001n[0y     \"\"\"Oxqmd ftq omotq ar m sdmbt (ogddqzfxk efadqe oazhqdfqp sdmbte).\z\g001n[1;32y    595\g001n[0y \g001n[0;34y\g001n[0y\g001n[0y\z",
+            "\g001n[0;31yWqknamdpUzfqddgbf\g001n[0y: "
+          ]
+        }
+      ]
+    }
+  ]
+}

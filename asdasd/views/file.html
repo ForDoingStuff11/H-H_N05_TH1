@@ -1,0 +1,147 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>File Encrypt/Decrypt</h2>
+<form method="POST" enctype="multipart/form-data">
+    <input type="file" name="file" required><br><br>
+
+    <label for="algorithm">Select algorithm:</label><br>
+    <select id="algorithm" name="algorithm" onchange="updateInputs()">
+        <option value="caesar">Caesar Cipher</option>
+        <option value="substitution">Substitution Cipher</option>
+        <option value="affine">Affine Cipher</option>
+        <option value="vigenere">Vigenère Cipher</option>
+        <option value="hill">Hill Cipher</option>
+        <option value="permutation">Permutation Cipher</option>
+        <option value="des">DES</option>
+        <option value="aes">AES</option>
+        <option value="rsa">RSA</option>
+        <option value="md5">MD5 (Hash)</option>
+        <option value="sha">SHA (Hash)</option>
+    </select><br><br>
+
+    <!-- Dynamic inputs -->
+    <input type="text" id="key" name="key" placeholder="Enter key" style="display:none;">
+    <input type="text" id="a" name="a" placeholder="Enter a" style="display:none;">
+    <input type="text" id="b" name="b" placeholder="Enter b" style="display:none;">
+    <input type="text" id="m" name="m" placeholder="Enter m (default 26)" style="display:none;">
+    <input type="text" id="matrix" name="matrix" placeholder="Enter matrix (e.g. 3,3;2,5)" style="display:none;">
+
+    <!-- For RSA -->
+    <textarea id="public_key" name="public_key" placeholder="Enter RSA Public Key" style="display:none;"></textarea>
+    <textarea id="private_key" name="private_key" placeholder="Enter RSA Private Key" style="display:none;"></textarea>
+
+    <button type="button" onclick="generateKey()">Auto Generate Key</button>
+    <br><br>
+
+    <label><input type="checkbox" name="delete_original" value="1"> Delete original file after processing</label><br><br>
+
+    <button type="submit" name="action" value="encrypt">Encrypt</button>
+    <button type="submit" name="action" value="decrypt">Decrypt</button>
+</form>
+
+<script>
+function updateInputs() {
+    const algo = document.getElementById("algorithm").value;
+    const ids = ["key", "a", "b", "m", "matrix", "public_key", "private_key"];
+    ids.forEach(id => document.getElementById(id).style.display = "none");
+
+    switch(algo) {
+        case "caesar":
+            show("key", "Enter key (integer)");
+            break;
+        case "substitution":
+            show("key", "Enter 26-letter substitution key");
+            break;
+        case "affine":
+            show("a");
+            show("b");
+            show("m");
+            break;
+        case "vigenere":
+            show("key", "Enter Vigenère key");
+            break;
+        case "hill":
+            show("matrix");
+            show("m");
+            break;
+        case "permutation":
+            show("key", "Enter permutation key (e.g. 3142)");
+            break;
+        case "des":
+            show("key", "Enter 8-byte DES key (or auto-generate)");
+            break;
+        case "aes":
+            show("key", "Enter 16 bytes AES key (or auto-generate)");
+            break;
+        case "rsa":
+            show("public_key");
+            show("private_key");
+            break;
+        case "md5":
+        case "sha":
+            // Hash: no key
+            break;
+    }
+}
+
+function show(id, placeholder = null) {
+    const el = document.getElementById(id);
+    el.style.display = "block";
+    if (placeholder) el.placeholder = placeholder;
+}
+
+function generateKey() {
+    const algo = document.getElementById("algorithm").value;
+    let key = "";
+
+    if (algo === "caesar") {
+        key = Math.floor(Math.random() * 255) + 1;
+    } 
+    else if (algo === "substitution") {
+        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+        key = alphabet.sort(() => Math.random() - 0.5).join("");
+    } 
+    else if (algo === "vigenere") {
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const length = Math.floor(Math.random() * 5) + 3;
+        for (let i = 0; i < length; i++)
+            key += chars[Math.floor(Math.random() * chars.length)];
+    } 
+    else if (algo === "permutation") {
+        const n = 5;
+        key = Array.from({length:n}, (_,i)=>i+1).sort(()=>Math.random()-0.5).join("");
+    } 
+    else if (algo === "des") {
+        // 8-byte key
+        const bytes = new Uint8Array(8);
+        crypto.getRandomValues(bytes);
+        key = Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+    else if (algo === "aes") {
+        // 16-byte AES key
+        const bytes = new Uint8Array(16);
+        crypto.getRandomValues(bytes);
+        key = Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+    else if (algo === "rsa") {
+        alert("RSA keys should be generated server-side for security reasons.");
+        return;
+    }
+    else if (algo === "md5" || algo === "sha") {
+        alert("Hash algorithms (MD5/SHA) do not require a key.");
+        return;
+    }
+
+    const keyInput = document.getElementById("key");
+    if (keyInput) keyInput.value = key;
+}
+
+window.onload = updateInputs;
+</script>
+
+{% if error %}
+<div style="color: red; margin-top:10px;">
+  <strong>Error:</strong> {{ error }}
+</div>
+{% endif %}
+{% endblock %}

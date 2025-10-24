@@ -1,0 +1,206 @@
+
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\title{Báo Cáo Bài Tập Lớn Cuối Phần\\\large{Giải bài toán tối ưu lộ trình đội xe có ràng buộc tải trọng bằng thuật toán Clarke--Wright kết hợp Local Search và so sánh với CPLEX}}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+📘 B\'AO C\'AO B\`AI TẬP LỚN CUỐI PHẦN
+
+{\DJ}ề t\`ai:
+
+Giải b\`ai to\'an tối ưu lộ tr{\`\i}nh {\dj}ội xe c\'o r\`ang buộc tải trọng bằng thuật to\'an Clarke{\textendash}Wright kết hợp Local Search v\`a so s\'anh với CPLEX
+
+I. GIỚI THIỆU
+
+1.1. Bối cảnh v\`a {\dj}ộng lực nghi\^en cứu
+
+Trong l\~{i}nh vực logistics v\`a vận tải, b\`ai to\'an {\dj}ịnh tuyến phương tiện (Vehicle Routing Problem - VRP) l\`a một trong những b\`ai to\'an kinh {\dj}iển v\`a c\'o t{\'\i}nh ứng dụng rất cao. N\'o xuất hiện trong c\'ac hệ thống giao h\`ang, thu gom r\'ac, vận chuyển nguy\^en vật liệu, v.v.
+
+Tuy nhi\^en, VRP l\`a b\`ai to\'an NP-hard {\textemdash} ngh\~{i}a l\`a số lượng nghiệm c\'o thể t\u{a}ng theo cấp số m\~{u} khi số kh\'ach h\`ang t\u{a}ng. C\'ac thuật to\'an ch{\'\i}nh x\'ac như quy hoạch tuyến t{\'\i}nh nguy\^en (MILP) c\'o thể giải ch{\'\i}nh x\'ac nhưng chỉ khả thi với c\'ac b\`ai to\'an nhỏ (dưới 50 {\dj}iểm). Do {\dj}\'o, cần ph\'at triển c\'ac thuật to\'an heuristic {\dj}ể t{\`\i}m nghiệm gần tối ưu trong thời gian ngắn.
+
+1.2. Mục ti\^eu của {\dj}ề t\`ai
+
+- X\^ay dựng chương tr{\`\i}nh m\^o phỏng VRP c\'o r\`ang buộc tải trọng (CVRP).
+
+- C\`ai {\dj}ặt thuật to\'an Clarke{\textendash}Wright Savings kết hợp Local Search {\dj}ể t{\`\i}m nghiệm heuristic.
+
+- So s\'anh kết quả thu {\dj}ược với m\^o h{\`\i}nh MILP giải bằng CPLEX.
+
+1.3. {\DJ}\'ong g\'op ch{\'\i}nh của {\dj}ề t\`ai
+
+- X\^ay dựng {\dj}ược hệ thống {\dj}ọc dữ liệu chuẩn CVRPLIB (.vrp) v\`a xử l\'y tự {\dj}ộng.
+
+- Triển khai {\dj}ược thuật to\'an Clarke{\textendash}Wright + Local Search c\'o khả n\u{a}ng chạy nhanh v\`a mở rộng.
+
+- Thực hiện so s\'anh {\dj}ịnh lượng với kết quả của CPLEX {\dj}ể {\dj}\'anh gi\'a {\dj}ộ sai lệch v\`a hiệu n\u{a}ng.
+
+II. PH\'AT BIỂU B\`AI TO\'AN
+
+2.1. M\^o tả b\`ai to\'an
+
+C\'o một kho h\`ang (depot) v\`a một tập kh\'ach h\`ang, mỗi kh\'ach h\`ang c\'o nhu cầu h\`ang h\'oa nhất {\dj}ịnh. Một {\dj}ội xe c\'o tải trọng giới hạn cần phục vụ to\`an bộ kh\'ach h\`ang, xuất ph\'at v\`a quay về kho, sao cho:
+
+- Mỗi kh\'ach h\`ang {\dj}ược phục vụ {\dj}\'ung một lần.
+
+- Tổng khối lượng h\`ang tr\^en mỗi xe kh\^ong vượt tải trọng.
+
+- Tổng qu\~ang {\dj}ường di chuyển nhỏ nhất.
+
+2.2. M\^o h{\`\i}nh h\'oa to\'an học (d\`anh cho CPLEX)
+
+K\'y hiệu:
+
+V = \{0,1,2,...,n\}: tập {\dj}ỉnh (0 l\`a depot).
+
+c\_ij: khoảng c\'ach giữa {\dj}iểm i v\`a j.
+
+d\_i: nhu cầu kh\'ach h\`ang i.
+
+Q: tải trọng mỗi xe.
+
+x\_ij \ensuremath{\in} \{0,1\}: 1 nếu xe {\dj}i từ i {\dj}ến j, ngược lại 0.
+
+u\_i: tải {\dj}\~a giao khi {\dj}ến kh\'ach h\`ang i.
+
+H\`am mục ti\^eu: min \ensuremath{\sum}\_i \ensuremath{\sum}\_j c\_ij x\_ij
+
+R\`ang buộc:
+
+- \ensuremath{\sum}\_j x\_ij = 1, \ensuremath{\forall}i \ensuremath{\in} N
+
+- \ensuremath{\sum}\_i x\_ij = 1, \ensuremath{\forall}j \ensuremath{\in} N
+
+- u\_i \ensuremath{-} u\_j + Q x\_ij \ensuremath{\leq} Q \ensuremath{-} d\_j, \ensuremath{\forall}i,j
+
+- x\_ij \ensuremath{\in} \{0,1\}, d\_i \ensuremath{\leq} u\_i \ensuremath{\leq} Q
+
+2.3. Kh\'o kh\u{a}n v\`a th\'ach thức
+
+- B\`ai to\'an c\'o số biến nhị ph\^an O(n{\textasciicircum}2), dẫn {\dj}ến thời gian giải t\u{a}ng nhanh.
+
+- Việc {\dj}ảm bảo r\`ang buộc tải trọng khiến kh\^ong thể {\dj}ơn giản hợp nhất c\'ac tuyến.
+
+- Do {\dj}\'o, cần heuristic {\dj}ể giải nhanh v\`a CPLEX {\dj}ể so s\'anh nghiệm ch{\'\i}nh x\'ac.
+
+III. NGHI\^EN CỨU LI\^EN QUAN
+
+3.1. C\'ac phương ph\'ap truyền thống
+
+- Clarke{\textendash}Wright Savings (1964): thuật to\'an heuristic cổ {\dj}iển dựa tr\^en việc hợp nhất c\'ac tuyến ri\^eng lẻ dựa v\`ao gi\'a trị 'savings'.
+
+- Sweep Algorithm, Nearest Neighbor, Insertion Heuristic: c\'ac phương ph\'ap tham lam {\dj}ơn giản.
+
+3.2. C\'ac hướng hiện {\dj}ại
+
+- Metaheuristics: Tabu Search, Simulated Annealing, Genetic Algorithm, Ant Colony Optimization.
+
+- M\^o h{\`\i}nh MILP với solver thương mại: IBM ILOG CPLEX, Gurobi.
+
+3.3. Ph\^an t{\'\i}ch
+
+Phương ph\'ap | Ưu {\dj}iểm | Nhược {\dj}iểm
+
+Clarke{\textendash}Wright | Dễ c\`ai {\dj}ặt, chạy nhanh | Dễ rơi v\`ao local optimum
+
+Local Search | Cải thiện nghiệm | Phụ thuộc nghiệm khởi tạo
+
+CPLEX (MILP) | Cho nghiệm tối ưu | Kh\^ong mở rộng cho n lớn
+
+IV. PHƯƠNG PH\'AP {\DJ}Ề XUẤT
+
+4.1. \'Y tưởng
+
+- D\`ung Clarke{\textendash}Wright {\dj}ể khởi tạo tuyến hợp lệ.
+
+- \'Ap dụng Local Search (2-opt) {\dj}ể cải thiện tổng chi ph{\'\i}.
+
+- So s\'anh nghiệm n\`ay với nghiệm CPLEX tr\^en c\`ung dữ liệu.
+
+4.2. Chi tiết thuật to\'an
+
+- {\DJ}ọc file .vrp từ CVRPLIB.
+
+- T{\'\i}nh ma trận khoảng c\'ach v\`a gi\'a trị savings.
+
+- Sắp xếp savings v\`a hợp nhất tuyến (Clarke{\textendash}Wright).
+
+- \'Ap dụng 2-opt {\dj}ể cải thiện nghiệm.
+
+- T{\'\i}nh tổng chi ph{\'\i} v\`a số tuyến.
+
+4.3. M\^o h{\`\i}nh CPLEX
+
+- D\`ung Python + docplex.
+
+- X\^ay m\^o h{\`\i}nh MILP như phần II.2.
+
+- So s\'anh tổng chi ph{\'\i}, thời gian chạy v\`a optimality gap với heuristic.
+
+V. KẾT QUẢ THỰC NGHIỆM
+
+5.1. Cấu h{\`\i}nh
+
+- Ng\^on ngữ: Python 3.10
+
+- C\^ong cụ: Google Colab, docplex (CPLEX), matplotlib
+
+- Dữ liệu: CVRPLIB {\textendash} A-n32-k5.vrp
+
+5.2. Phương ph\'ap so s\'anh
+
+K\'y hiệu | M\^o tả
+
+CW+LS | Clarke{\textendash}Wright + Local Search
+
+CPLEX | M\^o h{\`\i}nh MILP giải bằng docplex
+
+5.3. Kết quả {\dj}ịnh lượng (mẫu {\dj}iền sau khi chạy)
+
+Dữ liệu | Phương ph\'ap | Tổng qu\~ang {\dj}ường | Thời gian (s) | Sai lệch so với CPLEX (\%)
+
+A-n32-k5 | CPLEX | 784.12 | 2.83 | 0.0
+
+A-n32-k5 | CW+LS | 799.45 | 0.04 | +1.95
+
+5.4. Ph\^an t{\'\i}ch kết quả
+
+- Với b\`ai to\'an nhỏ (n=32), CPLEX cho nghiệm tối ưu, CW+LS sai lệch {\textasciitilde}2\%.
+
+- Thời gian chạy heuristic nhỏ hơn h\`ang chục lần.
+
+- Với dữ liệu lớn hơn (n\ensuremath{>}70), CPLEX kh\'o hội tụ, heuristic vẫn chạy nhanh.
+
+5.5. Biểu {\dj}ồ so s\'anh (sẽ th\^em sau)
+
+(Th\^em biểu {\dj}ồ bar chart tổng chi ph{\'\i} v\`a thời gian giữa 2 phương ph\'ap.)
+
+VI. KẾT LUẬN
+
+- {\DJ}ề t\`ai {\dj}\~a triển khai th\`anh c\^ong thuật to\'an Clarke{\textendash}Wright kết hợp Local Search.
+
+- Heuristic cho nghiệm gần tối ưu trong thời gian ngắn.
+
+- CPLEX {\dj}ạt nghiệm tối ưu nhưng mất nhiều thời gian khi k{\'\i}ch thước b\`ai to\'an t\u{a}ng.
+
+- Hướng ph\'at triển: thử nghiệm metaheuristics (Tabu Search, Genetic Algorithm) hoặc t{\'\i}ch hợp song song heuristic + CPLEX (Hybrid approach).
+
+T\`AI LIỆU THAM KHẢO
+
+- Clarke, G., \& Wright, J. W. (1964). Scheduling of Vehicles from a Central Depot to a Number of Delivery Points. Operations Research.
+
+- Toth, P., \& Vigo, D. (2002). The Vehicle Routing Problem. SIAM.
+
+- CVRPLIB Benchmark Dataset {\textendash} http://vrp.atd-lab.inf.puc-rio.br/
+
+\end{document}
