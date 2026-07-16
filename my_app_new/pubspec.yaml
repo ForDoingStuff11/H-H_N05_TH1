@@ -45,6 +45,7 @@ dependencies:
   http: ^1.5.0
   audioplayers: ^6.5.0
   shared_preferences: ^2.3.2
+  flutter_launcher_icons: ^0.14.4
 
 dev_dependencies:
   flutter_test:
@@ -103,3 +104,8 @@ flutter:
     - assets/audio/
     - assets/audio/bgm/
     - assets/audio/sfx/
+
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "assets/img/base.png"
