@@ -70,7 +70,7 @@ class _GameScreenState extends State<GameScreen> {
       Navigator.of(context).popUntil((route) => route.isFirst);
     });
   }
-  
+
   void _ensureUiTicker() {
     _turnTimer ??= Timer.periodic(const Duration(seconds: 1), (_) {
       if (mounted) setState(() {});
@@ -107,7 +107,7 @@ class _GameScreenState extends State<GameScreen> {
               onPressed: () {
                 Navigator.of(context).pop(true);
                 AudioService.play(SoundEffect.click);
-                AudioService.playBgm(BackgroundMusic.menu); 
+                AudioService.playBgm(BackgroundMusic.menu);
               },
               child: const Text(
                 "Rời phòng",
@@ -470,7 +470,9 @@ class _GameScreenState extends State<GameScreen> {
                       fontWeight: FontWeight.bold,
                       color: (timeLimit != -1 && remainingSeconds <= 5)
                           ? Colors.red
-                          : Colors.black87,
+                          : Theme.of(
+                              context,
+                            ).colorScheme.onSurface, // ✅ thay vì Colors.black87
                     ),
                   ),
 
