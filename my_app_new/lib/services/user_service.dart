@@ -56,16 +56,16 @@ Future<void> setCurrentRoom(String uid, String? roomId) async {
 
   /// Cộng số trận thắng
   Future<void> addWin(String uid) async {
-    await _users.doc(uid).update({"win": FieldValue.increment(1)});
+    await _users.doc(uid).update({"win": FieldValue.increment(1), "status": "online"});
   }
 
   /// Cộng số trận thua
   Future<void> addLose(String uid) async {
-    await _users.doc(uid).update({"lose": FieldValue.increment(1)});
+    await _users.doc(uid).update({"lose": FieldValue.increment(1), "status": "online"});
   }
   
   Future<void> addDraw(String uid) async {
-    await _users.doc(uid).update({"draw": FieldValue.increment(1)});
+    await _users.doc(uid).update({"draw": FieldValue.increment(1), "status": "online"});
   }
 
   Future<int> calculateEloAfterMatch(String winnerId, String loserId) async {

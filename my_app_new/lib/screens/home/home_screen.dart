@@ -251,10 +251,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                   Text(user["email"]),
                                   const SizedBox(height: 6),
-                                  Text(
-                                    "Status: ${user["status"]}",
-                                    style: const TextStyle(color: Colors.green),
-                                  ),
                                 ],
                               ),
                             ),
