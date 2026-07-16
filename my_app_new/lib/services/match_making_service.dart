@@ -105,11 +105,11 @@ class MatchmakingService {
 
         transaction.update(myRef, {
           "status": "matched",
-          "crurrentRoomId": roomRef.id,
+          "roomId": roomRef.id,
         });
         transaction.update(opponentRef, {
           "status": "matched",
-          "crurrentRoomId": roomRef.id,
+          "roomId": roomRef.id,
         });
       });
     } catch (_) {

@@ -10,9 +10,7 @@ import 'package:my_app/services/room_service.dart';
 import 'package:my_app/services/user_service.dart';
 import 'package:my_app/widgets/user_avatar.dart';
 
-
 import 'package:image_picker/image_picker.dart';
-
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -413,7 +411,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final uid = FirebaseAuth.instance.currentUser!.uid;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Edit Profile")),
+      appBar: AppBar(
+        title: const Text("Edit Profile"),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () async {
+            AudioService.play(SoundEffect.click);
+            AudioService.playBgm(BackgroundMusic.menu);
+            if (!mounted) return;
+            Navigator.pop(context);
+          },
+        ),
+      ),
       body: StreamBuilder(
         stream: _userService.listenUser(uid),
         builder: (context, snapshot) {
@@ -497,7 +506,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton.icon(
-                        onPressed: _saving
+                    onPressed: _saving
                         ? null
                         : () {
                             AudioService.play(SoundEffect.click);

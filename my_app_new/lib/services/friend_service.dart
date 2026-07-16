@@ -74,6 +74,16 @@ class FriendService {
     return snapshot.docs.map((e) => e.id).toSet();
   }
 
+  Future<Set<String>> getSentPendingRequestIds(String uid) async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection("friend_requests")
+        .where("fromUid", isEqualTo: uid)
+        .where("status", isEqualTo: "pending")
+        .get();
+
+    return snapshot.docs.map((e) => e.data()["toUid"] as String).toSet();
+  }
+
   Future<void> removeFriend({
     required String uid,
     required String friendUid,

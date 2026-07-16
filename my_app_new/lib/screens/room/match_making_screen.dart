@@ -132,7 +132,18 @@ class _MatchmakingScreenState extends State<MatchmakingScreen> {
         _cancelSearch();
       },
       child: Scaffold(
-        appBar: AppBar(title: const Text("Ranked Match")),
+        appBar: AppBar(
+          title: const Text("Ranked Match"),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () async {
+              AudioService.play(SoundEffect.click);
+              AudioService.playBgm(BackgroundMusic.menu);
+              _cancelSearch();
+            },
+          ),
+        ),
+
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

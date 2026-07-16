@@ -58,7 +58,7 @@ class RoomService {
 
       "winCondition": 5,
 
-      "turnTime": timeLimit,
+      "timeLimit": timeLimit,
     });
     await _userService.setCurrentRoom(hostId, docRef.id);
     if (guestId != null) {
@@ -103,7 +103,7 @@ class RoomService {
     await _userService.setCurrentRoom(user.uid, roomId);
   }
 
-Future<void> leaveRoom({required String roomId, required String uid}) async {
+  Future<void> leaveRoom({required String roomId, required String uid}) async {
     final roomRef = _firestore.collection("rooms").doc(roomId);
 
     Map<String, dynamic>? finishedRoomData;
@@ -136,13 +136,11 @@ Future<void> leaveRoom({required String roomId, required String uid}) async {
 
       if (status == "finished") return;
 
-
       final hostId = data["hostId"];
       final guestId = data["guestId"];
 
       if (uid == hostId) {
         if (guestId != null) {
-          // Còn guest -> đôn guest lên làm host, phòng không bị xóa
           transaction.update(roomRef, {
             "hostId": guestId,
             "guestId": null,
@@ -152,11 +150,9 @@ Future<void> leaveRoom({required String roomId, required String uid}) async {
             "status": "waiting",
           });
         } else {
-          // Không còn ai -> xóa phòng như cũ
           transaction.delete(roomRef);
         }
       } else {
-        // Guest rời -> trả phòng về trạng thái chờ, host giữ nguyên
         transaction.update(roomRef, {
           "guestId": null,
           "guestReady": false,
@@ -166,17 +162,24 @@ Future<void> leaveRoom({required String roomId, required String uid}) async {
       }
     });
 
-    await _userService.setCurrentRoom(uid, null);
-
+    // ---- Cộng thống kê TRƯỚC khi xoá currentRoomId ----
     if (finishedRoomData != null && winnerId != null && loserId != null) {
       final isRanked = finishedRoomData!["isRanked"] ?? false;
       await _userService.addWin(winnerId!);
       await _userService.addLose(loserId!);
       if (isRanked) {
-        final delta = await _userService.calculateEloAfterMatch(winnerId!, loserId!);
-        await roomRef.update({"eloChanges": {winnerId!: delta, loserId!: -delta}});
+        final delta = await _userService.calculateEloAfterMatch(
+          winnerId!,
+          loserId!,
+        );
+        await roomRef.update({
+          "eloChanges": {winnerId!: delta, loserId!: -delta},
+        });
       }
     }
+
+    // ---- Xoá currentRoomId SAU CÙNG ----
+    await _userService.setCurrentRoom(uid, null);
   }
 
   Future<void> updateSettings({
@@ -239,7 +242,12 @@ Future<void> leaveRoom({required String roomId, required String uid}) async {
       if (data == null) return;
       final int boardSize = data["boardSize"];
       final List<String> board = List.filled(boardSize * boardSize, "");
-      transaction.update(roomRef, {"status": "playing", "board": board, "startedAt": FieldValue.serverTimestamp(), "turnStartedAt": FieldValue.serverTimestamp(),});
+      transaction.update(roomRef, {
+        "status": "playing",
+        "board": board,
+        "startedAt": FieldValue.serverTimestamp(),
+        "turnStartedAt": FieldValue.serverTimestamp(),
+      });
     });
   }
 
@@ -248,19 +256,15 @@ Future<void> leaveRoom({required String roomId, required String uid}) async {
     required int index,
     required String symbol,
   }) async {
-    final roomRef = _firestore.collection("rooms").doc(roomId);
+    final roomRef = _firestore.collection('rooms').doc(roomId);
 
     final snapshot = await roomRef.get();
-
     if (!snapshot.exists) return;
 
     final room = snapshot.data()!;
-
     final board = List<String>.from(room["board"]);
-
     final int boardSize = room["boardSize"];
 
-    // Ô đã có quân
     if (board[index].isNotEmpty) return;
 
     board[index] = symbol;
@@ -275,28 +279,30 @@ Future<void> leaveRoom({required String roomId, required String uid}) async {
       String winner = symbol == "X" ? room["hostId"] : room["guestId"];
       String loser = symbol == "O" ? room["hostId"] : room["guestId"];
 
-      Map<String, int>? eloChanges;
-      if (room["isRanked"]) {
-        final delta = await _userService.calculateEloAfterMatch(winner, loser);
-        eloChanges = {winner: delta, loser: -delta};
-      }
-
-      await _userService.addWin(winner);
-      await _userService.addLose(loser);
-
+      // 1. Cập nhật room "finished" TRƯỚC, để thỏa điều kiện rule
       await roomRef.update({
         "winnerId": winner,
         "status": "finished",
         "board": board,
         "currentTurn": symbol == "X" ? "O" : "X",
         "finishedAt": FieldValue.serverTimestamp(),
-        "eloChanges": ?eloChanges,
       });
+
+      // 2. Sau đó mới cộng win/lose/elo
+      await _userService.addWin(winner);
+      await _userService.addLose(loser);
+
+      if (room["isRanked"] == true) {
+        final delta = await _userService.calculateEloAfterMatch(winner, loser);
+        await roomRef.update({
+          "eloChanges": {winner: delta, loser: -delta},
+        });
+      }
     } else {
       await roomRef.update({
         "board": board,
         "currentTurn": symbol == "X" ? "O" : "X",
-        "turnStartedAt": FieldValue.serverTimestamp()
+        "turnStartedAt": FieldValue.serverTimestamp(),
       });
     }
   }
@@ -360,9 +366,7 @@ Future<void> leaveRoom({required String roomId, required String uid}) async {
         _checkDirection(board, row, col, 1, -1, symbol, boardSize); // chéo phụ
   }
 
-  Future<void> handleTimeout({
-    required String roomId,
-  }) async {
+  Future<void> handleTimeout({required String roomId}) async {
     final docRef = _firestore.collection("rooms").doc(roomId);
 
     Map<String, dynamic>? finishedRoomData;
@@ -400,7 +404,10 @@ Future<void> leaveRoom({required String roomId, required String uid}) async {
       await _userService.addLose(loserId!);
 
       if (isRanked) {
-        final delta = await _userService.calculateEloAfterMatch(winnerId!, loserId!);
+        final delta = await _userService.calculateEloAfterMatch(
+          winnerId!,
+          loserId!,
+        );
         await docRef.update({
           "eloChanges": {winnerId!: delta, loserId!: -delta},
         });
@@ -455,14 +462,12 @@ Future<void> leaveRoom({required String roomId, required String uid}) async {
           "turnStartedAt": FieldValue.serverTimestamp(),
         });
 
-         transaction.update(
-          _firestore.collection("users").doc(hostId),
-          {"currentRoomId": newRoomRef.id},
-        );
-        transaction.update(
-          _firestore.collection("users").doc(guestId),
-          {"currentRoomId": newRoomRef.id},
-        );
+        transaction.update(_firestore.collection("users").doc(hostId), {
+          "currentRoomId": newRoomRef.id,
+        });
+        transaction.update(_firestore.collection("users").doc(guestId), {
+          "currentRoomId": newRoomRef.id,
+        });
         // Đánh dấu phòng cũ để cả 2 client biết đường chuyển sang phòng mới
         transaction.update(roomRef, {"rematchRoomId": newRoomRef.id});
       } else {
@@ -500,7 +505,7 @@ Future<void> leaveRoom({required String roomId, required String uid}) async {
     await roomRef.update({(isHost ? "hostRematch" : "guestRematch"): false});
   }
 
-Future<void> requestDraw({
+  Future<void> requestDraw({
     required String roomId,
     required String uid,
   }) async {
@@ -521,7 +526,7 @@ Future<void> requestDraw({
     });
   }
 
-Future<void> respondDraw({
+  Future<void> respondDraw({
     required String roomId,
     required String uid,
     required bool accept,
@@ -546,7 +551,7 @@ Future<void> respondDraw({
           "drawStatus": "accepted",
           "finishedAt": FieldValue.serverTimestamp(),
         });
-        finishedRoomData = data; 
+        finishedRoomData = data;
       } else {
         transaction.update(roomRef, {
           "drawStatus": null,
@@ -576,9 +581,6 @@ Future<void> respondDraw({
     if (data["drawStatus"] != "pending") return;
     if (data["drawRequestedBy"] != uid) return;
 
-    await roomRef.update({
-      "drawStatus": null,
-      "drawRequestedBy": null,
-    });
+    await roomRef.update({"drawStatus": null, "drawRequestedBy": null});
   }
 }

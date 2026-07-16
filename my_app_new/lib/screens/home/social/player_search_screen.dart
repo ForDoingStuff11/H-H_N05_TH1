@@ -22,6 +22,7 @@ class _PlayerSearchScreenState extends State<PlayerSearchScreen> {
 
   List<Map<String, dynamic>> _players = [];
   Set<String> _friendIds = {};
+  Set<String> _pendingIds = {}; // lời mời đã gửi, đang chờ
 
   bool _loading = false;
 
@@ -40,6 +41,7 @@ class _PlayerSearchScreenState extends State<PlayerSearchScreen> {
         .toList();
 
     _friendIds = await _friendService.getFriendIds(uid);
+    _pendingIds = await _friendService.getSentPendingRequestIds(uid);
 
     setState(() {
       _loading = false;
@@ -90,7 +92,10 @@ class _PlayerSearchScreenState extends State<PlayerSearchScreen> {
                   itemCount: _players.length,
                   itemBuilder: (context, index) {
                     final player = _players[index];
-                    final isFriend = _friendIds.contains(player["uid"]);
+                    final String playerUid = player["uid"];
+                    final isFriend = _friendIds.contains(playerUid);
+                    final isPending = _pendingIds.contains(playerUid);
+
                     return Card(
                       child: ListTile(
                         leading: UserAvatar(
@@ -114,29 +119,37 @@ class _PlayerSearchScreenState extends State<PlayerSearchScreen> {
                                   Text("Friend"),
                                 ],
                               )
-                            : SizedBox(
-                                width: 90,
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    final doc = await _userService.getUser(uid);
+                            : isPending
+                                ? const Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(Icons.hourglass_empty, color: Colors.grey),
+                                      SizedBox(width: 6),
+                                      Text("Pending"),
+                                    ],
+                                  )
+                                : SizedBox(
+                                    width: 90,
+                                    child: ElevatedButton(
+                                      onPressed: () async {
+                                        final doc = await _userService.getUser(uid);
+                                        final fromName = doc.data()?["displayName"];
 
-                                    final fromName = doc.data()?["displayName"];
+                                        await _friendService.sendRequest(
+                                          fromUid: uid,
+                                          fromName: fromName,
+                                          toUid: playerUid,
+                                        );
 
-                                    await _friendService.sendRequest(
-                                      fromUid: uid,
-                                      fromName: fromName,
-                                      toUid: player["uid"],
-                                    );
+                                        setState(() {
+                                          _pendingIds.add(playerUid); // đổi sang pending, không phải friend
+                                        });
 
-                                    setState(() {
-                                      _friendIds.add(player["uid"]);
-                                    });
-
-                                    AudioService.play(SoundEffect.click);
-                                  },
-                                  child: const Text("Add"),
-                                ),
-                              ),
+                                        AudioService.play(SoundEffect.click);
+                                      },
+                                      child: const Text("Add"),
+                                    ),
+                                  ),
                       ),
                     );
                   },

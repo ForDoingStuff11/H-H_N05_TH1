@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:my_app/screens/gameplay/game_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_app/services/audio_service.dart';
+import 'package:my_app/services/user_service.dart';
 import '../../services/room_service.dart';
 import 'package:flutter/services.dart';
 
@@ -18,13 +19,13 @@ class WaitingRoomScreen extends StatefulWidget {
 
 class _WaitingRoomScreenState extends State<WaitingRoomScreen> {
   final RoomService _roomService = RoomService();
+  final UserService _userService = UserService();
 
   bool _starting = false;
   int _countdown = 3;
   Timer? _timer;
   late final String uid;
 
-  // Các lựa chọn setting cho phòng, chỉnh lại danh sách này nếu cần
   final List<int> _boardSizeOptions = const [10, 15, 20, 25, 30, 35, 40];
   final List<int> _timeLimitOptions = const [10, 15, 20, 30, 45, 60, -1];
 
@@ -42,7 +43,6 @@ class _WaitingRoomScreenState extends State<WaitingRoomScreen> {
 
   void _startCountdown() {
     if (_starting) return;
-
     _starting = true;
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
@@ -87,6 +87,7 @@ class _WaitingRoomScreenState extends State<WaitingRoomScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () async {
             AudioService.play(SoundEffect.click);
+            AudioService.playBgm(BackgroundMusic.menu);
             await _roomService.leaveRoom(roomId: widget.roomId, uid: uid);
 
             if (!mounted) return;
@@ -113,6 +114,7 @@ class _WaitingRoomScreenState extends State<WaitingRoomScreen> {
           final int currentBoardSize = room["boardSize"];
           final int currentTimeLimit = room["timeLimit"];
           final bool currentIsRanked = room["isRanked"] ?? false;
+          final String? guestId = room["guestId"];
 
           if (roomStatus == "playing") {
             WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -126,7 +128,6 @@ class _WaitingRoomScreenState extends State<WaitingRoomScreen> {
               );
             });
           }
-          // Chỉ chuyển màn hình một lần
           if (roomStatus == "starting") {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               _startCountdown();
@@ -147,7 +148,6 @@ class _WaitingRoomScreenState extends State<WaitingRoomScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-
                     const SizedBox(height: 20),
                     Row(
                       mainAxisSize: MainAxisSize.min,
@@ -156,7 +156,6 @@ class _WaitingRoomScreenState extends State<WaitingRoomScreen> {
                           "RoomID: ${widget.roomId}",
                           style: const TextStyle(fontSize: 22),
                         ),
-
                         IconButton(
                           icon: const Icon(Icons.copy),
                           onPressed: () async {
@@ -164,9 +163,7 @@ class _WaitingRoomScreenState extends State<WaitingRoomScreen> {
                             await Clipboard.setData(
                               ClipboardData(text: widget.roomId),
                             );
-
                             if (!context.mounted) return;
-
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text("Copied!")),
                             );
@@ -176,7 +173,7 @@ class _WaitingRoomScreenState extends State<WaitingRoomScreen> {
                     ),
                     const SizedBox(height: 30),
 
-                    // ---- Room settings (editable khi còn đang "waiting") ----
+                    // ---- Room settings ----
                     Card(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
@@ -262,39 +259,25 @@ class _WaitingRoomScreenState extends State<WaitingRoomScreen> {
                           padding: const EdgeInsets.all(16),
                           child: Column(
                             children: [
-                              ListTile(
-                                leading: const Icon(Icons.person),
-                                title: const Text("Host"),
-                                subtitle: Text(room["hostId"]),
-                                trailing: Icon(
-                                  hostReady
-                                      ? Icons.check_circle
-                                      : Icons.hourglass_empty,
-                                  color: hostReady
-                                      ? Colors.green
-                                      : Colors.orange,
-                                ),
+                              _PlayerTile(
+                                uid: room["hostId"],
+                                label: "Host",
+                                ready: hostReady,
+                                isRanked: currentIsRanked,
+                                userService: _userService,
                               ),
-
                               const Divider(),
-
-                              room["guestId"] == null
+                              guestId == null
                                   ? const ListTile(
                                       leading: Icon(Icons.person_outline),
                                       title: Text("Waiting for player..."),
                                     )
-                                  : ListTile(
-                                      leading: const Icon(Icons.person),
-                                      title: const Text("Guest"),
-                                      subtitle: Text(room["guestId"]),
-                                      trailing: Icon(
-                                        guestReady
-                                            ? Icons.check_circle
-                                            : Icons.hourglass_empty,
-                                        color: guestReady
-                                            ? Colors.green
-                                            : Colors.orange,
-                                      ),
+                                  : _PlayerTile(
+                                      uid: guestId,
+                                      label: "Guest",
+                                      ready: guestReady,
+                                      isRanked: currentIsRanked,
+                                      userService: _userService,
                                     ),
                             ],
                           ),
@@ -303,8 +286,7 @@ class _WaitingRoomScreenState extends State<WaitingRoomScreen> {
 
                       const SizedBox(height: 20),
 
-                      // ---- Nút Ready ----
-                      if (isWaiting && room["guestId"] != null)
+                      if (isWaiting && guestId != null)
                         ElevatedButton.icon(
                           onPressed: () {
                             _toggleReady(myReady);
@@ -335,9 +317,7 @@ class _WaitingRoomScreenState extends State<WaitingRoomScreen> {
                         color: Colors.green,
                         size: 80,
                       ),
-
                       const SizedBox(height: 20),
-
                       const Text(
                         "Opponent Found!",
                         style: TextStyle(
@@ -346,9 +326,7 @@ class _WaitingRoomScreenState extends State<WaitingRoomScreen> {
                           color: Colors.green,
                         ),
                       ),
-
                       const SizedBox(height: 30),
-
                       Text(
                         "Starting in $_countdown...",
                         style: const TextStyle(
@@ -364,6 +342,60 @@ class _WaitingRoomScreenState extends State<WaitingRoomScreen> {
           );
         },
       ),
+    );
+  }
+}
+
+/// Hiển thị avatar + displayName (+ elo nếu ranked) cho 1 người chơi
+/// trong phòng, thay vì hiện UID thô.
+class _PlayerTile extends StatelessWidget {
+  final String uid;
+  final String label;
+  final bool ready;
+  final bool isRanked;
+  final UserService userService;
+
+  const _PlayerTile({
+    required this.uid,
+    required this.label,
+    required this.ready,
+    required this.isRanked,
+    required this.userService,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: userService.listenUser(uid),
+      builder: (context, snapshot) {
+        final data = snapshot.data?.data();
+
+        final String displayName =
+            (data?["displayName"] as String?)?.trim().isNotEmpty == true
+            ? data!["displayName"]
+            : "Người chơi";
+        final String? photoUrl = data?["photoUrl"] as String?;
+        final int? elo = data?["elo"] as int?;
+
+        return ListTile(
+          leading: CircleAvatar(
+            backgroundImage: (photoUrl != null && photoUrl.isNotEmpty)
+                ? NetworkImage(photoUrl)
+                : null,
+            child: (photoUrl == null || photoUrl.isEmpty)
+                ? const Icon(Icons.person)
+                : null,
+          ),
+          title: Text(displayName),
+          subtitle: isRanked && elo != null
+              ? Text("$label · ELO: $elo")
+              : Text(label),
+          trailing: Icon(
+            ready ? Icons.check_circle : Icons.hourglass_empty,
+            color: ready ? Colors.green : Colors.orange,
+          ),
+        );
+      },
     );
   }
 }

@@ -61,7 +61,15 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Join Room"),
+        title: const Text("Join Room"),leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () async {
+              AudioService.play(SoundEffect.click);
+              AudioService.playBgm(BackgroundMusic.menu);
+              if (!mounted) return;
+              Navigator.pop(context);
+            },
+          ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(24),

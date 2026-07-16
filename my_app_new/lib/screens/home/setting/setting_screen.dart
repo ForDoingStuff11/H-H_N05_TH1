@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/models/sound.dart';
+import 'package:my_app/services/audio_service.dart';
 import 'package:my_app/services/settings_service.dart';
 
 
@@ -14,7 +16,14 @@ class SettingsScreen extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text("Settings"),
+            title: const Text("Settings"),        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            AudioService.play(SoundEffect.click);
+            AudioService.playBgm(BackgroundMusic.menu);
+            Navigator.pop(context);
+          },
+        ),
           ),
 
           body: ListView(
