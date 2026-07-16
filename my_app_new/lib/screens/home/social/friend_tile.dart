@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app/models/sound.dart';
@@ -36,10 +37,9 @@ class FriendTile extends StatelessWidget {
     }
   }
 
-  @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _userService.getUser(friendUid),
+    return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+      stream: _userService.listenUser(friendUid),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const ListTile(title: Text("Loading..."));
@@ -106,18 +106,28 @@ class FriendTile extends StatelessWidget {
                             FirebaseAuth.instance.currentUser!.uid,
                           );
 
-                          await _inviteService.sendInvite(
-                            fromUid: FirebaseAuth.instance.currentUser!.uid,
-                            fromName: me.data()!["displayName"],
-                            toUid: friendUid,
-                            toName: user["displayName"],
-                          );
-
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("Invitation sent.")),
+                          try {
+                            await _inviteService.sendInvite(
+                              fromUid: FirebaseAuth.instance.currentUser!.uid,
+                              fromName: me.data()!["displayName"],
+                              toUid: friendUid,
+                              toName: user["displayName"],
                             );
-                          AudioService.play(SoundEffect.click);
+
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Invitation sent."),
+                                ),
+                              );
+                              AudioService.play(SoundEffect.click);
+                            }
+                          } catch (e) {
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(e.toString())),
+                              );
+                            }
                           }
                         },
                   child: Text(

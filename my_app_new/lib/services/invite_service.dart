@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class InviteService {
   final _invites = FirebaseFirestore.instance.collection("game_invites");
+  final _users = FirebaseFirestore.instance.collection("users"); // ✅ thêm
 
   Future<void> sendInvite({
     required String fromUid,
@@ -9,6 +10,14 @@ class InviteService {
     required String toUid,
     required String toName,
   }) async {
+    // ✅ Kiểm tra lại trạng thái người nhận ngay trước khi tạo invite
+    final toUserDoc = await _users.doc(toUid).get();
+    final toStatus = toUserDoc.data()?["status"] ?? "offline";
+
+    if (toStatus == "offline" || toStatus == "playing") {
+      throw Exception("Người này hiện không thể nhận lời mời (đang $toStatus).");
+    }
+
     final existing = await _invites
         .where("fromUid", isEqualTo: fromUid)
         .where("toUid", isEqualTo: toUid)
@@ -18,6 +27,7 @@ class InviteService {
     if (existing.docs.isNotEmpty) {
       return;
     }
+
     await _invites.add({
       "fromUid": fromUid,
       "fromName": fromName,

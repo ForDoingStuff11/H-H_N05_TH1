@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:my_app/models/sound.dart';
 import 'package:my_app/screens/home/social/friend_request_tile.dart';
 import 'package:my_app/screens/home/social/friend_tile.dart';
+import 'package:my_app/services/audio_service.dart';
 import 'package:my_app/services/friend_service.dart';
 
 class FriendsScreen extends StatelessWidget {
@@ -15,7 +17,14 @@ class FriendsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Friends"),
+        title: const Text("Friends"),leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              AudioService.play(SoundEffect.click);
+              AudioService.playBgm(BackgroundMusic.menu);
+              Navigator.pop(context);
+            },
+          ),
       ),
       body: Column(
         children: [

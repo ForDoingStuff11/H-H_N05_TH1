@@ -21,7 +21,7 @@ class UserService {
 
       "elo": 1000,
 
-      "status": "offline",
+      "status": "online",
 
       "createdAt": FieldValue.serverTimestamp(),
 
@@ -107,7 +107,7 @@ Future<void> setCurrentRoom(String uid, String? roomId) async {
 
   /// Danh sách user online
   Stream<QuerySnapshot<Map<String, dynamic>>> getOnlineUsers() {
-    return _users.where("online", isEqualTo: true).snapshots();
+    return _users.where("status", isEqualTo: "online").snapshots();
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> searchUsers(

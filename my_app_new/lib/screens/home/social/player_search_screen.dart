@@ -59,7 +59,18 @@ class _PlayerSearchScreenState extends State<PlayerSearchScreen> {
     final uid = FirebaseAuth.instance.currentUser!.uid;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Search Player")),
+      appBar: AppBar(
+        title: const Text("Search Player"),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () async {
+            AudioService.play(SoundEffect.click);
+            AudioService.playBgm(BackgroundMusic.menu);
+            if (!mounted) return;
+            Navigator.pop(context);
+          },
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -120,36 +131,41 @@ class _PlayerSearchScreenState extends State<PlayerSearchScreen> {
                                 ],
                               )
                             : isPending
-                                ? const Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(Icons.hourglass_empty, color: Colors.grey),
-                                      SizedBox(width: 6),
-                                      Text("Pending"),
-                                    ],
-                                  )
-                                : SizedBox(
-                                    width: 90,
-                                    child: ElevatedButton(
-                                      onPressed: () async {
-                                        final doc = await _userService.getUser(uid);
-                                        final fromName = doc.data()?["displayName"];
-
-                                        await _friendService.sendRequest(
-                                          fromUid: uid,
-                                          fromName: fromName,
-                                          toUid: playerUid,
-                                        );
-
-                                        setState(() {
-                                          _pendingIds.add(playerUid); // đổi sang pending, không phải friend
-                                        });
-
-                                        AudioService.play(SoundEffect.click);
-                                      },
-                                      child: const Text("Add"),
-                                    ),
+                            ? const Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.hourglass_empty,
+                                    color: Colors.grey,
                                   ),
+                                  SizedBox(width: 6),
+                                  Text("Pending"),
+                                ],
+                              )
+                            : SizedBox(
+                                width: 90,
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    final doc = await _userService.getUser(uid);
+                                    final fromName = doc.data()?["displayName"];
+
+                                    await _friendService.sendRequest(
+                                      fromUid: uid,
+                                      fromName: fromName,
+                                      toUid: playerUid,
+                                    );
+
+                                    setState(() {
+                                      _pendingIds.add(
+                                        playerUid,
+                                      ); // đổi sang pending, không phải friend
+                                    });
+
+                                    AudioService.play(SoundEffect.click);
+                                  },
+                                  child: const Text("Add"),
+                                ),
+                              ),
                       ),
                     );
                   },

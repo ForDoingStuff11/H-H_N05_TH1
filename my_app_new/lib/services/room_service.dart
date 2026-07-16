@@ -235,13 +235,14 @@ class RoomService {
 
   Future<void> startGame(String roomId) async {
     final roomRef = _firestore.collection("rooms").doc(roomId);
-
     await _firestore.runTransaction((transaction) async {
       final snapshot = await transaction.get(roomRef);
       final data = snapshot.data();
       if (data == null) return;
       final int boardSize = data["boardSize"];
       final List<String> board = List.filled(boardSize * boardSize, "");
+      await _userService.setStatus(data["hostId"], "playing");
+      await _userService.setStatus(data["guestId"], "playing");
       transaction.update(roomRef, {
         "status": "playing",
         "board": board,
