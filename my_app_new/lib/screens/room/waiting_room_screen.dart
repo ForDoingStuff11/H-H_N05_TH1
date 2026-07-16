@@ -153,7 +153,7 @@ class _WaitingRoomScreenState extends State<WaitingRoomScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          "RoomID: ${widget.roomId}",
+                          "RoomID: ${widget.roomId.substring(0, 8)}...",
                           style: const TextStyle(fontSize: 22),
                         ),
                         IconButton(
